@@ -1,0 +1,9 @@
+Counting sort:
+
+O(n)
+
+Bucket Sort.
+
+Ojo con las ventajas y desventajas naturales de cada tipo de Sort, especialmente con el uso de la memoria.
+
+Ojo con el rango y la cantidad de digitos para el radix sort.

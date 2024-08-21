@@ -1,0 +1,44 @@
+tp4RespuestasHarteker
+
+
+
+"""
+PUNTO 1:
+    Size of the largest connected component: 600493
+    Number of connected components: 179851
+PUNTO 2:
+    Total time (in seconds) multiplied by number of nodes: 3849088.7093570232
+
+PUNTO 3:
+    Number of triangles in the graph: 9399651
+
+PUNTO 4:
+    Approximate diameter of the graph (using 50 random nodes): 38
+
+PUNTO 5:
+    Top 10 vertices by PageRank:
+        Vertex: 597621, Score: 0.00104
+        Vertex: 551829, Score: 0.0008
+        Vertex: 504140, Score: 0.0008
+        Vertex: 687325, Score: 0.0008
+        Vertex: 885605, Score: 0.00078
+        Vertex: 537039, Score: 0.00076
+        Vertex: 32163, Score: 0.00074
+        Vertex: 605856, Score: 0.00072
+        Vertex: 558791, Score: 0.0007
+        Vertex: 751384, Score: 0.0007
+
+PUNTO 6:
+    Approximate longest circumference of the graph: 3
+
+EXTRAS:
+
+PUNTO 2:
+    Clustering coefficient of the graph: 1.348013
+
+PUNTO 3:
+    Vertex with the highest betweenness centrality: 560622, Betweenness Centrality: 0.055376
+
+
+
+"""

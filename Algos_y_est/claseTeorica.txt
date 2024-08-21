@@ -1,0 +1,560 @@
+27/02
+
+Estructuras de Datos:
+ - Contenedores con Elementos 
+ - Operaciones (Interfaz) 
+ - Metadatos y implementacion de algoritmos c/ operacion = Implementacion
+
+ejemplo:
+Colas: crearCola(capacidad_max)
+       destruirCola()
+       encolar(elemento e)
+       desencolar(elemento e)
+------------------------------------------
+esto define a una INTERFAZ 
+------------------------------------------
+como funciona la implementacion entonces?:
+
+elemento *p;
+
+crearCola(int capacidad_max){
+    p = malloc(sizeof(elemento) * capacidad_max);
+}
+
+destruirCola(){
+    free(p);
+}
+------------------------------------------
+COSTO 
+      -> mejor caso
+      -> peor caso
+
+calculo amortizado de costo total: sum(costo total de todas las alternativas) / cantidad de alternativas 
+
+n = cantidad de instancias
+def costoAmortizado(n:int):
+    a = 0
+    for i in range(n):
+        a += i
+    return a/n
+
+29/02 CLASE 2
+
+Ordenes (Big O - Notation):
+    O(1) = Orden Constante
+    O(log(N)) = Orden Logaritmico
+    O(N) = Orden Lineal
+    O(N^m) = Orden Polinomico 
+    O(N!) y O(a^N) = Orden None-Polinomial
+
+------------------------------------------VECTORES de tamaño estatico c/Buffer Unico------------------------------------------
+
+Struct{
+    int *p;
+} Vector;
+
+Vector*Create(int largo){
+    p = (int *) malloc(sizeof(int)*largo); -> O(N) 
+    return p;
+    }
+    Destroy(Vector *pV){
+        free(pV -> p); -> O(1)
+    }
+
+    Set_at(Vector *pV , int pos, int val){
+        pV -> p[pos] = val; -> O(1)
+    }
+
+    Get_at(Vector *pV , int pos){
+        return pV -> p[pos]; -> O(1)
+    }
+  
+------------------------------------------VECTORES de tamaño estatico c/Listas------------------------------------------
+
+Create(int N) -> O(N)
+Destroy() -> O(N)
+Set_at() -> O(N)
+Get_at() -> O(N)
+
+------------------------------------------VECTORES de tamaño Dinamico c/Buffer Unico------------------------------------------
+Struct{
+    int *p;
+    int tam;
+    int res;
+} Vector;
+
+insert_at(int pos, int val); -> O(N)
+delete_at(int pos); -> O(N)
+insert_last(int val); -> O(N)
+delete_last(); -> O(N)
+insert_first(int val); -> O(N)
+delete_first(); -> O(N)
+
+------------------------------------------VECTORES de tamaño Dinamico c/Listas------------------------------------------
+
+Struct{
+    int valor;
+    Nodo *sig;
+}Nodo;
+
+Struct {
+    Nodo *p;
+    Nodo *p_ult;
+}VectorDinamico;
+
+Create(int N) -> O(N)
+Destroy() -> O(N)
+Set_at() -> O(N)
+Get_at() -> O(N)
+insert_at(int pos); -> O(N)
+delete_at(int pos); -> O(N)
+insert_last(); -> O(N) , si se usa un puntero al ultimo Nodo seria O(1) 
+delete_last(); -> O(N)
+insert_first(); -> O(1)
+delete_first(); -> O(1)
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        05/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+    ------------------------------------------Lista Simplemente Enlazada------------------------------------------
+
+|_____| -> |__10___| -> |__27___| -> |__4___| -> |__120___| -|
+primero                                              ^
+|_____| -------------------------------------------> |
+ultimo
+
+|_____| 
+cantidad
+
+Struct Nodo{
+    int valor;
+    struct Nodo *sig;
+}
+
+Struct Lista_Simple{
+    struct Nodo *primero;
+    struct Nodo *ultimo;
+    size_t cantidad; 
+}
+
+crear(Struct Lista_Simple *p_lista){
+    p_lista -> primero = NULL;
+    p_lista -> cantidad = 0;
+}
+
+destruir(Lista_Simple *p_lista){
+    for(    ;primero != NULL;    ){
+        Struct Nodo *p = primero -> sig;
+        free(primero);
+        primero = p;
+    }
+}
+
+void insertar_ult(Lista_Simple *p_lista, int val);
+void borrar_ult(Lista_Simple *p_lista);
+int get_ult(Lista_Simple *p_lista);
+
+void insertar_primero(Lista_Simple *p_lista, int val);
+void borrar_primero(Lista_Simple *p_lista);
+int get_primero(Lista_Simple *p_lista);
+
+void insertar_en(Lista_Simple *p_lista, int pos, int val);
+void borrar_en(Lista_Simple *p_lista, int pos);
+int get_en(Lista_Simple *p_lista, int pos);
+
+int buscar(Lista_Simple *p_lista, int val);
+    imprimir(Lista_Simple *p_lista);
+
+void insertar_ult(Lista_Simple *p_lista, int val){
+    Struct Nodo *pNuevo = malloc(sizeof(Nodo));         | pNuevo->valor =v ; pNuevo->sig = NULL
+    pNuevo -> valor = v;                                | if
+    pNuevo -> sig = NULL;                               |
+    if(cantidad == 0){                                  |
+        primero = pNuevo;                               | 
+    } else {                                            |
+        for(p=primero; p->sig != NULL; p = p->sig);     |
+        p -> sig = pNuevo;                              |
+    }                                                   |
+    cantidad += 1;                                      |
+}
+
+    ------------------------------------------Lista Circular------------------------------------------
+
+|_____| -> |__10___| -> |__27___| -> |__4___| -> |__120___|
+actual        ^                                      |
+_             |--<--<--<--<--<--<--<--<--<--<--<--<--|
+
+
+Struct Nodo{
+    int valor;
+    struct Nodo *sig;
+}
+
+Struct Lista_Circ{
+    struct Nodo *Actual;
+    size_t cantidad; 
+}
+
+crear(); --> O(1)
+destruir(); --> O(N)
+Insertar_Actual(); --> O(N) / O(1) si hago Actual->sig en Obtener_Actual(), es decir, le digo al usuario que el actual es una mas que lo que es
+Obtener_Actual(); --> O(1)  
+Borrar_Actual(); --> O(1) Aplicando la misma idea que en Insertar_Actual()
+Avanzar(); --> O(1)
+
+    ------------------------------------------Lista Doblemente Enlazada------------------------------------------
+
+|_____| <--> |__10___| <--> |__27___| <--> |__4___| <--> |__120___| --|
+primero                                                       ^
+|_____|->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->-->--|
+ultimo
+
+Struct Nodo{
+    int valor;
+    struct Nodo *sig;
+    struct Nodo *ant;
+}
+
+Struct Lista_DEnlazada{
+    struct Nodo *p;
+    size_t cantidad; 
+}
+
+
+    ------------------------------------------Lista Circular Doblemente Enlazada------------------------------------------
+
+|_____| -> |__10___| <--> |__27___| <--> |__4___| <--> |__120___|
+actual        ^                                            ^
+_             |-><--><--><--><--><--><--><--><--><--><--><-|
+
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        07/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+            ------------------------------------------Pilas(stack)------------------------------------------
+
+push ->  |____| 
+         |_12_| <- pop
+         |_15_|
+         |_30_|
+         |_10_|
+
+Interfaz :                                    c/Listas  |  c/Vectores de Tamaño Dinamico
+        void crearPila(Struct Pila*p);        -> O(1)   |  -> O(1)
+        void destruirPila(Struct Pila*p);     -> O(N)   |  -> O(1)
+        void apilar(Struct Pila*p, int v);    -> O(1)   |  -> O(1)
+        int desapilar(Struct Pila *p);        -> O(1)   |  -> O(1)
+        int topeDePila(Struct Pila *p);       -> O(1)   |  -> O(1)
+
+Implementacion:
+
+
+            ------------------------------------------Colas(Queue)------------------------------------------
+
+Interfaz :                                  c/Listas  | 
+        void crearCola(Struct Cola *c);     -> O(1)   | 
+        void destruirCola(Struct Cola *c);  -> O(N)   | 
+        void encolar(Struct *cola, int v);  -> O(1)   | 
+        int desencolar(Struct *cola);       -> O(1)   | 
+
+
+
+
+1) como implementar una cola con dos pilas?
+2) como implementacion una pila con dos colas?
+
+3) Problema del Carnaval:
+    
+    - van llegando las carrosas en desorden
+    - las carrosas tienen que desfilar ordenadamente
+    - lo unico que tengo para maniobrar es una calle cortada
+    - modelar el problema haciendo uso de pilas y colas
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        12/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+void organizarCarrozas(Cola pCola, Cola colaSalida){
+    Pila pPila;
+    while(!pCola.empty() && !pPila.empty()){
+        for(int i = 1 ; i =< tamCola(pCola); i++){
+            if(pCola.peekCola() == i){
+                colaSalida.enqueue(pCola[i]);
+                pCola.dequeue(i);
+            } 
+            if(pCola.peekCola() != i){
+                pPila.apilar(pCola[i]);
+                pCola.dequeue(i);
+            } 
+            if(pPila.peekPila() == i){
+                colaSalida.enqueue(pPila[i]);
+                pPila.pop(i);
+            } 
+            if(pCola.peekCola() > pPila.peekPila()){
+                Error("No se puede ordenar.");
+                return -1;
+            } 
+        }
+    }
+    return 0;
+}
+
+int digitos(Cola Objetivo, Lista_Circ Inicial){
+    int count = 0;
+    while(!Objetivo.empty()){
+        if(Objetivo.peek() != Inicial.actual()){
+            
+        }
+        if(Objetivo.peek() == Inicial.actual()){
+
+        }
+    } 
+}
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        14/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+Heap 
+
+def Previas:
+    - Arbol: grafo conexo y aciclico
+
+Raiz -->|___|-----------\           h = 4
+        /    \          |___|       h = 3
+    |___|    |___|        |  \      h = 2
+               /       |___| |___|  h = 1 
+            |___|--> Hoja           h = 0
+
+    - Arbol binario: tiene a lo sumo dos hijos
+    Struct Nodo {
+        elem e;
+        Struct Nodo *Izq;
+        Struct Nodo *Der;
+    } Nodo;
+
+    h + 1 <= nodos <= 2^h+1
+    
+    - Arbol binario completo a izquierda: igual que el binario pero antes de pasar a otro nivel se tiene que completar 
+                                          el que estaba, el a izquierda quiere decir que el nuevo nivel se empieza 
+                                          construir desde la izquierda.
+
+
+ENTONCES:
+         Un Max Heap es un Arbol binario completo a izq con la condicion PADRE >= HIJO.
+         Esta implementado con un arreglo unico.
+
+| 20 | 17 | 10 | 12 | 4 | 5 | 7 | 3 |   |
+  1    2    3    4    5   6   7   8   
+ - haces i/2 para moverse del hijo al padre
+ - hace 2*i y 2*i+1 para moverse del padre al hijo 
+
+
+Oredanr -> O(n log(n))
+encolar n veces -> O(n log(n))
+n Heap-Down desde las hojas -> O(n log(n))
+n Heap-UP desde la raiz -> O(n log(n))
+n Heap-UP desde las hojas -> O(n log(n))
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        19/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+    Min Heap: Nodo es menor que sus hijos
+
+encolar/insertar    -> O(log n)
+getMin              -> O(1)
+removeMin           -> O(log n)
+build               -> O(n)
+Meld                -> O(n log(n)) o O(n1 + n2)
+decreaseNode        -> O(k * log n)
+
+Heap * Meld(Heap *h1, Heap *h2)
+
+    Tournament Tree: 
+
+Arbol Binario, Completo (n^k hojas = n ; n - 1 nodos internos), respeta propiedades del Heap
+             _             |_____|                  |
+  n-1        |            /       \                 |
+nodosInternos|        |____|     |____|             | h = log2(N)
+ (repetidos) |_       /    \     /    \             |
+             n    |___|   |___| |___| |___|  2^k    |
+
+
+   Min Tournament Heap (conjunto de Tournament Trees)
+
+encolar/insertar    -> O(log n)
+getMin              -> O(log n)
+removeMin           -> O(log n)
+build               -> O(n) porque usa la serie armonica = n(1 + 1/2 + 1/4 + ...) <= 2n -> O(n)
+Meld                -> O(log(n1) + log(n2))
+decreaseNode        -> O()
+
+internas:
+Ident. Min --> log(n)
+Freacture --> log(n)
+Coalesce --> log(n)
+
+    
+    Lazy Tournament Heap
+
+encolar/insertar    -> O(1)
+getMin              -> Peor caso: O(n) caso Amortizado: O(log(n))
+removeMin           -> Peor caso: O(n) caso Amortizado: O(log(n))
+build               -> O(n) 
+Meld                -> O(1)
+decreaseNode        -> O()
+
+    Abdication Heap:
+
+encolar/insertar    -> O(1)
+getMin              -> O()
+removeMin           -> O(n)
+build               -> O()
+Meld                -> O(1)
+decreaseNode        -> O(1)
+
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        26/03/2024
+------------------------------------------------------------------------------------------------------------------------------
+
+busqueda binaria:
+
+left
+right 
+n = (l+r)/2
+
+int binariSearch(Datos A[], int n, int Key){
+    int L,R,m;
+    L = 0;
+    R = n -1;
+
+    while (L <= R) {
+        m = floor((L+R)/2);
+
+        if (A[m] < Key) L = m + 1;
+        else if (A[m] > Key) R = m - 1;
+        else return m;
+    }
+    return -1;
+}
+
+Busqueda Interpolada:
+ - Costo Amortizado: O( log(log(n)) ) si los elemento describen un patron Lineal (distribucion uniforme)
+ - Si siguen una distribucion Exponencial -> O(n)
+
+int InterpolationSearch(int A[], int n, int Key){
+    int L, R, m;
+
+    L = 0;
+    R = n - 1;
+    while(A[R] != A[L] && Key >= A[L] && Key <= A[R]){
+        m = L + ( (Key - A[L]) * (R - L) / (A[R] - A[L]) )
+        if(A[m] < Key) L = m + 1;
+        else if(A[m] > Key) R = m - 1;
+        else return m;
+    }
+    if(Key == A[L]) return L;
+    else return -1;
+}
+
+    Binary Search Trees:
+
+Definiciones:
+
+Arbol: grafo conexo y aciclico.
+Arbol Binario: Arbol + Maximo de 2 hijos.
+Arbol de Busqueda Binario: 
+ - Arbol Binario
+ + Nodos del Sub-Arbol izquierdo <= Nodo
+ + Nodos del Sub-Arbol derecho > Nodo
+
+Metadatos:
+
+struct Node {
+    int key;
+    void* value;
+    Node* Left;
+    Node* Right;
+}
+
+struct Tree{
+    Node* Root;
+    size_t Size;
+}
+
+Primitivas:
+
+ - Tree *Create()
+ - bool Insert(Tree* T, int Key, void *Value);
+ - Delete(Tree* T, int Key);
+ - void *SearchKey(Tree* T, int Key);
+ - void Pre_order(Tree *T); 
+ - void In_order(Tree *T); 
+ - void Pos_order(Tree *T); 
+
+
+Node *SearchNode(Node *Root, int Key){
+    if(Root == NULL) return NULL;
+    if(Root -> Key == Key) return Root;
+
+    if(Key <= Root -> Key){
+        return findParent(Root -> Left, Key); 
+    } 
+    else 
+    if`(Key > Root -> Key) return findParent(Root -> Right, Key);
+}
+
+
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        09/04/2024
+------------------------------------------------------------------------------------------------------------------------------\
+
+        Key --> Diccionarios <-- Value
+
+Arreglo/Vectores        Listas          Arboles
+Alg. Sort              SkipLists        BST
+Alg. Busq               (W. Pugh)
+
+-----
+
+Repaso:
+
+Arbol 
+    --> Arboles Binarios (grado 2)
+        --> Heap (Min)
+            (completo a Izq + nodo < hijo)
+        --> B.S.T. (Binary Search Tree)
+            (dado un nodo, el arbol de la izq. son todos <= nodo, y en el arbol der. son todos > nodo)
+                (1) B.F.S. (Broad First Search)
+                (2) D.F.S. (Deapth First Search) 
+                    - Pre_Orden
+                    - Pos_Orden
+                    - En_Orden -> Key ordenados
+
+----
+
+AVL-Tree (1962)
+    --> B.S.L.
+    --> (Balanceado) Diferencia de Altura del sub-Arbol Derecho e Izquierdo es <= h = 1
+
+insert(Key, Value)  --> O(k*log2(n))
+delete(Key)         --> O(k*log2(n))
+search()            --> O(log2(n))
+
+
+B-Tree
+    --> Grado (t, g, b)
+        -> Todos los nodos, excepto la RAIZ, tienen entre t-1 y 2*t-1 claves ordenadas
+    	-> RAIZ puede tener una clave
+        -> Todos los nodos, excepto las hojas, tienen hasta claves +1 hijos
+        -> Todas las hojas estan al mismo nivel
+
+
+------------------------------------------------------------------------------------------------------------------------------
+                                                        18/04/2024
+------------------------------------------------------------------------------------------------------------------------------\
